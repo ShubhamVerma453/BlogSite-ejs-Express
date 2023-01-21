@@ -3,7 +3,11 @@
 <h1>Home</h1>
 <% allPost.forEach(function (post){ %>
     <h1> <%= post.title %> </h1>
-    <p class="trunk"> <%= post.content %> </p>
+    <div class="row">
+        <div class="col-sm-10">
+    <p class="trunk"> <%= post.content %> </p> </div>
+    <div class="col-sm-1"><a href="/post/<%= post.title %>" >Read more</a></div>
+    </div>
 <% }); %>
 
 

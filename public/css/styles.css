@@ -40,7 +40,10 @@
 }
 .trunk{
     white-space:nowrap;
-    max-width: 80%;
+    max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.col-sm-1{
+    padding: 0;
 }
