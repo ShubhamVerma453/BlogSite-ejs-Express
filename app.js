@@ -17,7 +17,7 @@ const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rho
 
 app.get("/", (req, res) => {
   res.render("home", { allPost: allPost });
-  // console.log(allPost);
+  // console.log(allPost); 
 });
 app.get("/contact", (req, res) => {
   res.render("contact", { data: contactContent });
@@ -32,17 +32,21 @@ app.get("/post/:topic", (req, res) => {
   let name = lodash.lowerCase(req.params.topic);
   console.log(name);
   let flag = false;
+  let reqPost;
   allPost.forEach(post => {
     let title = lodash.lowerCase(post.title);
     if (title == name) {
       flag = true;
+      reqPost = post;
     }
   });
-  if (flag)
-    console.log("Found");
-  else
+  if (flag) {
+    res.render("post", {post : reqPost});
+  }
+  else {
     console.log("Not Available");
-  res.redirect("/");
+    res.redirect("/");
+  }
 });
 
 app.post("/compose", (req, res) => {
