@@ -1,13 +1,13 @@
 //jshint esversion:6
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const lodash = require("lodash");
 
 const port = process.env.port || 3000;
 const app = express();
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 let allPost = [];
@@ -15,24 +15,40 @@ const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui 
 const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
 const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rhoncus urna neque viverra justo nec ultrices. Arcu dui vivamus arcu felis bibendum. Consectetur adipiscing elit duis tristique. Risus viverra adipiscing at in tellus integer feugiat. Sapien nec sagittis aliquam malesuada bibendum arcu vitae. Consequat interdum varius sit amet mattis. Iaculis nunc sed augue lacus. Interdum posuere lorem ipsum dolor sit amet consectetur adipiscing elit. Pulvinar elementum integer enim neque. Ultrices gravida dictum fusce ut placerat orci nulla. Mauris in aliquam sem fringilla ut morbi tincidunt. Tortor posuere ac ut consequat semper viverra nam libero.";
 
-app.get("/", (req, res)=>{
-  res.render("home", {allPost : allPost});
-  console.log(allPost);
+app.get("/", (req, res) => {
+  res.render("home", { allPost: allPost });
+  // console.log(allPost);
 });
-app.get("/contact", (req, res)=>{
-  res.render("contact", {data : contactContent});
+app.get("/contact", (req, res) => {
+  res.render("contact", { data: contactContent });
 });
-app.get("/about", (req, res)=>{
-  res.render("about", {data : aboutContent});
+app.get("/about", (req, res) => {
+  res.render("about", { data: aboutContent });
 });
-app.get("/compose", (req, res)=>{
+app.get("/compose", (req, res) => {
   res.render("compose");
 });
+app.get("/post/:topic", (req, res) => {
+  let name = lodash.lowerCase(req.params.topic);
+  console.log(name);
+  let flag = false;
+  allPost.forEach(post => {
+    let title = lodash.lowerCase(post.title);
+    if (title == name) {
+      flag = true;
+    }
+  });
+  if (flag)
+    console.log("Found");
+  else
+    console.log("Not Available");
+  res.redirect("/");
+});
 
-app.post("/compose", (req, res)=>{
+app.post("/compose", (req, res) => {
   var post = {
-    title : req.body.postTitle,
-    content : req.body.postContent
+    title: req.body.postTitle,
+    content: req.body.postContent
   };
   allPost.push(post);
   res.redirect("/");
@@ -40,6 +56,6 @@ app.post("/compose", (req, res)=>{
 
 
 
-app.listen(port, function() {
-  console.log("started "+port);
+app.listen(port, function () {
+  console.log("started " + port);
 });
