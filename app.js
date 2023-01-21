@@ -11,6 +11,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 let allPost = [];
+const aboutContent = "about content";
+const contactContent = "contact content";
 
 app.get("/", (req, res) => {
   res.render("home", { allPost: allPost });
@@ -54,8 +56,6 @@ app.post("/compose", (req, res) => {
   allPost.push(post);
   res.redirect("/");
 });
-
-
 
 app.listen(port, function () {
   console.log("started " + port);
