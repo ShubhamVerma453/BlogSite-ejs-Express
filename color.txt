@@ -1,0 +1,4 @@
+#019267 - dark green
+#00C897 - little light green
+#FFD365 - yellow
+#FDFFA9 - skin
