@@ -17,7 +17,7 @@ const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rho
 
 app.get("/", (req, res)=>{
   res.render("home", {allPost : allPost});
-  // console.log(allPost);
+  console.log(allPost);
 });
 app.get("/contact", (req, res)=>{
   res.render("contact", {data : contactContent});
