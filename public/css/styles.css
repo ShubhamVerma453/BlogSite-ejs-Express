@@ -30,3 +30,11 @@
     font-size: 12px;
     color: #fff;
 }
+.btn{
+    background-color: #00C897;
+    color: #fff;
+}
+.btn:hover{
+    background-color: #019267;
+    color: #fff;
+}
