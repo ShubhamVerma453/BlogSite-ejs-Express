@@ -1,8 +1,7 @@
 //jshint esversion:6
 const express = require("express");
 const bodyParser = require("body-parser");
-const ejs = require("ejs");
-const lodash = require("lodash");
+// const ejs = require("ejs");
 const mongoose = require("mongoose");
 const port = process.env.port || 3000;
 
@@ -16,7 +15,6 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-let allPost = [];
 const aboutContent = "about content";
 const contactContent = "contact content";
 
@@ -27,9 +25,7 @@ app.get("/", (req, res) => {
     else{
       res.render("home", { allPost: data });
     }
-  });
-  
-  // console.log(allPost); 
+  }); 
 });
 app.get("/contact", (req, res) => {
   res.render("contact", { data: contactContent });
@@ -40,29 +36,17 @@ app.get("/about", (req, res) => {
 app.get("/compose", (req, res) => {
   res.render("compose");
 });
-app.get("/post/:topic", (req, res) => {
-  // let name = lodash.lowerCase(req.params.topic);
-  let name = req.params.topic;
+app.get("/post/:topicId", (req, res) => {
+  let id = req.params.topicId;
+  // console.log(id);
 
-  console.log(name);
-  let flag = false;
-  let reqPost;
-  allPost.forEach(post => {
-    let title = lodash.lowerCase(post.title);
-    if (title == name) {
-      flag = true;
-      reqPost = post;
-    }
-  });
-
-  Blog.findOne({_id:name}, (err, data)=>{
+  Blog.findOne({_id:id}, (err, data)=>{
     if(err){
     console.log(err);
     res.redirect("/");
     } else {
-      console.log(data);
-    res.render("post", {post : data});
-    // res.redirect("/");
+      // console.log(data);
+      res.render("post", {post : data});
     }
   });
 });
@@ -72,16 +56,10 @@ app.post("/compose", (req, res) => {
     title: req.body.postTitle,
     content: req.body.postContent
   }];
-  var postaa = {
-    title: req.body.postTitle,
-    content: req.body.postContent
-  };
   Blog.insertMany(post, (err)=>{
     if(err)
       console.log(err);
   });
-
-  allPost.push(postaa);
   res.redirect("/");
 });
 
