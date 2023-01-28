@@ -55,11 +55,20 @@ app.get("/post/:topic", (req, res) => {
 });
 
 app.post("/compose", (req, res) => {
-  var post = {
+  var post = [{
+    title: req.body.postTitle,
+    content: req.body.postContent
+  }];
+  var postaa = {
     title: req.body.postTitle,
     content: req.body.postContent
   };
-  allPost.push(post);
+  Blog.insertMany(post, (err)=>{
+    if(err)
+      console.log(err);
+  });
+
+  allPost.push(postaa);
   res.redirect("/");
 });
 
