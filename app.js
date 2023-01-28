@@ -3,8 +3,14 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const lodash = require("lodash");
-
+const mongoose = require("mongoose");
 const port = process.env.port || 3000;
+
+mongoose.set("strictQuery", false);
+mongoose.connect("mongodb://127.0.0.1:27017/blogDB", { useNewUrlParser: true });
+const blog = new mongoose.Schema({ title : String, content : String });
+const Blog = mongoose.model("Blog", blog);
+
 const app = express();
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
