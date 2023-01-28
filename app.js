@@ -21,7 +21,14 @@ const aboutContent = "about content";
 const contactContent = "contact content";
 
 app.get("/", (req, res) => {
-  res.render("home", { allPost: allPost });
+  Blog.find({}, (err, data)=>{
+    if(err)
+      console.log(err);
+    else{
+      res.render("home", { allPost: data });
+    }
+  });
+  
   // console.log(allPost); 
 });
 app.get("/contact", (req, res) => {
@@ -34,7 +41,9 @@ app.get("/compose", (req, res) => {
   res.render("compose");
 });
 app.get("/post/:topic", (req, res) => {
-  let name = lodash.lowerCase(req.params.topic);
+  // let name = lodash.lowerCase(req.params.topic);
+  let name = req.params.topic;
+
   console.log(name);
   let flag = false;
   let reqPost;
@@ -45,13 +54,17 @@ app.get("/post/:topic", (req, res) => {
       reqPost = post;
     }
   });
-  if (flag) {
-    res.render("post", {post : reqPost});
-  }
-  else {
-    console.log("Not Available");
+
+  Blog.findOne({_id:name}, (err, data)=>{
+    if(err){
+    console.log(err);
     res.redirect("/");
-  }
+    } else {
+      console.log(data);
+    res.render("post", {post : data});
+    // res.redirect("/");
+    }
+  });
 });
 
 app.post("/compose", (req, res) => {
